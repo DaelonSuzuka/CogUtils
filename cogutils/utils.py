@@ -4,9 +4,15 @@ import os
 import re
 import sys
 from pathlib import Path
+import yaml
+from dotmap import DotMap
 
 # ------------------------------------------------------------------------------
 
+project = DotMap(yaml.full_load(open('project.yaml').read()))
+
+end_comment = '*/'
+start_comment = '/*'
 
 def subdirs_of(search_dir):
     """Recursively finds every subdirectory of 'search_dir'"""
