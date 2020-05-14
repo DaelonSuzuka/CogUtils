@@ -19,7 +19,7 @@ class Gperf():
                  no_strlen=True,
                  # .gperf file declarations
                  omit_struct_type=False,
-                 enum=True,
+                 enum=False,
                  readonly_tables=True,
                  global_table=True,
                  ignore_case=False,
@@ -28,6 +28,7 @@ class Gperf():
                  remove_line_directives=True,
                  use_stdint=True,
                  remove_keywords=True,
+                 struct_typedef=True,
                  ):
         self.strings = strings
         if struct:
@@ -92,14 +93,14 @@ class Gperf():
             outl("%%")
 
             # finally, add the strings
-            f.write("\n".join([f'{s}, k_{s}' for s in self.strings]))
+            f.write("\n".join(self.strings))
 
     def remove_temp_file(self):
         os.remove('strings.gperf')
 
     def run(self):
         self.create_temp_file()
-        result = check_output(self.command('strings.gperf')).decode()
+        result = check_output(self.command(file='strings.gperf')).decode()
         result = result.split('\r\n')
         self.remove_temp_file()
 
